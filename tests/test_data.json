@@ -1,6 +1,8 @@
 {
     "data": [
-        {"var_name": "variable", "category": "value0", "factor": 1.0},
-        {"var_name": "variable", "category": "value1", "factor": 1.0}
+        {"var_name": "variable0", "category": "value0", "factor": 0.1},
+        {"var_name": "variable0", "category": "value1", "factor": 0.2},
+        {"var_name": "variable1", "category": "value0", "factor": 0.3},
+        {"var_name": "variable1", "category": "value1", "factor": 0.4}
     ]
 }

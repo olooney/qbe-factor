@@ -1,13 +1,8 @@
 from fastapi.testclient import TestClient
 from qbe_factor.api import app
-import json
+from .util import load_json_file
 
 client = TestClient(app)
-
-
-def load_json_file(filename):
-    with open(filename) as file:
-        return json.load(file)
 
 
 def test_ping():
@@ -32,7 +27,7 @@ def test_get_factors():
     assert response.status_code == 200
 
     response_data = response.json()
-    assert len(input_data["data"]) == response_data["results"]
+    assert len(input_data["data"]) == len(response_data["results"])
 
     for variable, result in zip(input_data["data"], response_data["results"]):
         assert variable["var_name"] == result["var_name"]
