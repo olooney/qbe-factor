@@ -8,16 +8,14 @@ setup(
     description="Example FastAPI app for QBE",
     packages=["qbe_factor"],
     package_data={
-        "qbe_factor": [
-            "data/*.json"
-        ],
+        "qbe_factor": ["data/*.json"],
     },
     install_requires=[
         "fastapi",
         "uvicorn[standard]",
     ],
     extras_require={
-        'dev': [
+        "dev": [
             "pytest",
             "black",
         ],
