@@ -49,4 +49,3 @@ async def get_factors(variable_list: VariableList) -> FactorResults:
         return {"results": factors}
     except ValueError as ex:
         raise HTTPException(status_code=422, detail=ex.args[0])
-

@@ -46,7 +46,7 @@ def test_get_factors_errors():
     bad_categories = {
         "data": [
             {"var_name": "country", "category": "50+"},
-            {"var_name": "age_group", "category": "UK"}
+            {"var_name": "age_group", "category": "UK"},
         ]
     }
     response = client.post("/get_factors", json=bad_categories)
