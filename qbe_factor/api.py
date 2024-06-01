@@ -36,16 +36,13 @@ async def validate(variable_list: VariableList) -> ValidationResults:
     try:
         model.get_factors(variables)
     except ValueError as ex:
-        return { "valid": False, "message": ex.message }
+        return {"valid": False, "message": ex.message}
 
-    return { "valid": True, "message": "" }
-
+    return {"valid": True, "message": ""}
 
 
 @app.post("/get_factors")
 async def get_factors(variable_list: VariableList) -> FactorResults:
     variables = variable_list.data
     factors = list(model.get_factors(variables))
-    return {
-        "results": factors
-    }
+    return {"results": factors}

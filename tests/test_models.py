@@ -1,5 +1,5 @@
 import pytest
-from qbe_factor.models import FactorModel
+from qbe_factor.models import FactorModel, VariableFactor
 from .util import load_json_file
 
 
@@ -44,6 +44,7 @@ def test_get_factors():
     variable_factors = model.get_factors(variables)
 
     for variable, variable_factor in zip(variables, variable_factors):
+        assert isinstance(variable_factor, VariableFactor)
         assert variable["var_name"] == variable_factor.var_name.value
         assert variable["category"] == variable_factor.category
 

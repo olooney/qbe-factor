@@ -1,6 +1,6 @@
 import json
 import pkgutil
-from typing import Iterable, Dict
+from typing import Iterable, Dict, Union
 from enum import Enum
 import pydantic
 
@@ -24,7 +24,6 @@ class VariableFactor(pydantic.BaseModel):
 class FactorModel:
     """
     Returns risk adjustment factors for various demographic categories.
-
     """
 
     def __init__(self, factor_data):
@@ -55,10 +54,13 @@ class FactorModel:
     def get_factor(self, var_name: VarName, category: str) -> float:
         """
         Return the factor for the given category of the given variable.
-        Raises a ValueError if not valid.
-        """
-        key = (var_name, category)
 
+        Raises a ValueError if the category value is not valid.
+        """
+        if isinstance(var_name, VarName):
+            var_name = var_name.value
+
+        key = (var_name, category)
         factor = self.index.get(key, None)
 
         if factor is None:
@@ -68,10 +70,14 @@ class FactorModel:
 
         return factor
 
-    def get_factors(self, variables: Iterable[Variable]) -> Iterable[VariableFactor]:
+    def get_factors(
+        self, variables: Iterable[Union[Variable, Dict]]
+    ) -> Iterable[VariableFactor]:
         """
-        Processes an interable of variables (var_name/category dicts)
-        add adds the factor to each.
+        Processes an interable of variables (var_name/category dicts) and adds
+        the factor to each. You can either pass `qbe_factor.models.Variable`
+        model, or you can pass dicts with the same keys.
+
         Raises a ValueError if any is invalid.
         """
         for variable in variables:
@@ -81,7 +87,7 @@ class FactorModel:
             factor = self.get_factor(variable.var_name.value, variable.category)
 
             yield VariableFactor(
-                var_name = variable.var_name,
-                category = variable.category,
-                factor = factor
+                var_name=variable.var_name,
+                category=variable.category,
+                factor=factor,
             )
