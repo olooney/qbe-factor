@@ -38,7 +38,7 @@ Sprint Backlog
 [ ] unit tests
 [ ] format / comments
 
-[ ] add API
+[X] add API
 [ ] pydantic types
 [ ] `var_name` validation
 [ ] `category` validation
@@ -52,4 +52,4 @@ Backlog
 [ ] Dockerfile?
 [ ] Authentication?
 [ ] DEV/PROD flags?
-
+[ ] CLI?
