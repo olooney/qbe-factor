@@ -1,49 +1,28 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import pydantic
-from enum import Enum
 from typing import List
+from .models import VarName, Variable, VariableFactor, FactorModel
 
 
 app = FastAPI()
-
-
-###  Pydantic Input/Output Schemas ###
+model = FactorModel.load()
 
 
 class PingResponse(pydantic.BaseModel):
     message: str
 
 
-class VarName(Enum):
-    country = "country"
-    age_group = "age_group"
-
-
-class Variable(pydantic.BaseModel):
-    var_name: VarName
-    category: str
-
-
 class VariableList(pydantic.BaseModel):
     data: List[Variable]
 
 
-class Factor(pydantic.BaseModel):
-    var_name: VarName
-    category: str
-    factor: float
-
-
 class FactorResults(pydantic.BaseModel):
-    results: List[Factor]
+    results: List[VariableFactor]
 
 
 class ValidationResults(pydantic.BaseModel):
     valid: bool
     message: str
-
-
-### Routes ###
 
 
 @app.get("/ping")
@@ -52,10 +31,21 @@ async def ping() -> PingResponse:
 
 
 @app.post("/validate")
-async def validate(data: VariableList) -> ValidationResults:
-    return {"valid": False, "message": "TODO"}
+async def validate(variable_list: VariableList) -> ValidationResults:
+    variables = variable_list.data
+    try:
+        model.get_factors(variables)
+    except ValueError as ex:
+        return {"valid": False, "message": ex.message}
+
+    return {"valid": True, "message": ""}
 
 
 @app.post("/get_factors")
-async def get_factors(data: VariableList) -> FactorResults:
-    return {"results": []}
+async def get_factors(variable_list: VariableList) -> FactorResults:
+    try:
+        variables = variable_list.data
+        factors = list(model.get_factors(variables))
+        return {"results": factors}
+    except ValueError as ex:
+        raise HTTPException(status_code=422, detail=ex.args[0])
