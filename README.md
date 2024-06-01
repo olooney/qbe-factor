@@ -98,16 +98,16 @@ Sprint Backlog
 --------------
 
 [X] add model data
-[ ] model class
-[ ] test model
-[ ] unit tests
+[X] model class
+[X] test model
+[X] unit tests
 [ ] format / comments
 
 [X] add API
 [X] pydantic types
 [ ] `var_name` validation
 [ ] `category` validation
-[ ] unit tests
+[X] unit tests
 [ ] format / comments
 
 
