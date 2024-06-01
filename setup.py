@@ -21,7 +21,5 @@ setup(
             "black",
         ],
     },
-    scripts=[
-        'scripts/run_server.py'
-    ]
+    scripts=["scripts/run_server.py"],
 )

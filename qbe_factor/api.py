@@ -9,13 +9,14 @@ app = FastAPI()
 
 ###  Pydantic Input/Output Schemas ###
 
+
 class PingResponse(pydantic.BaseModel):
     message: str
 
 
 class VarName(Enum):
-    country = 'country'
-    age_group = 'age_group'
+    country = "country"
+    age_group = "age_group"
 
 
 class Variable(pydantic.BaseModel):
@@ -44,6 +45,7 @@ class ValidationResults(pydantic.BaseModel):
 
 ### Routes ###
 
+
 @app.get("/ping")
 async def ping() -> PingResponse:
     return {"message": "PONG"}
@@ -51,12 +53,9 @@ async def ping() -> PingResponse:
 
 @app.post("/validate")
 async def validate(data: VariableList) -> ValidationResults:
-    return { "valid": False, "message": "TODO" }
+    return {"valid": False, "message": "TODO"}
 
 
 @app.post("/get_factors")
 async def get_factors(data: VariableList) -> FactorResults:
-    return { "results": [] }
-
-
-
+    return {"results": []}

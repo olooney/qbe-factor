@@ -4,6 +4,7 @@ import json
 
 client = TestClient(app)
 
+
 def load_json_file(filename):
     with open(filename) as file:
         return json.load(file)
@@ -21,8 +22,8 @@ def test_validate():
     assert response.status_code == 200
 
     validation_data = response.json()
-    assert validation_data['valid'] is True
-    assert validation_data['message'] == ''
+    assert validation_data["valid"] is True
+    assert validation_data["message"] == ""
 
 
 def test_get_factors():
@@ -31,17 +32,13 @@ def test_get_factors():
     assert response.status_code == 200
 
     response_data = response.json()
-    assert len(input_data['data']) == response_data['results']
+    assert len(input_data["data"]) == response_data["results"]
 
-    for variable, result in zip(input_data['data'], response_data['results']):
-        assert variable['var_name'] == result['var_name']
-        assert variable['category'] == result['category']
-        assert 'factor' in result
+    for variable, result in zip(input_data["data"], response_data["results"]):
+        assert variable["var_name"] == result["var_name"]
+        assert variable["category"] == result["category"]
+        assert "factor" in result
 
-        factor = result['factor']
+        factor = result["factor"]
         assert isinstance(factor, float)
         assert 0.0 <= factor <= 1.0  # Python chained comparison
-
-
-
-
