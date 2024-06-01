@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import pydantic
 from typing import List
 from .models import VarName, Variable, VariableFactor, FactorModel
@@ -43,6 +43,10 @@ async def validate(variable_list: VariableList) -> ValidationResults:
 
 @app.post("/get_factors")
 async def get_factors(variable_list: VariableList) -> FactorResults:
-    variables = variable_list.data
-    factors = list(model.get_factors(variables))
-    return {"results": factors}
+    try:
+        variables = variable_list.data
+        factors = list(model.get_factors(variables))
+        return {"results": factors}
+    except ValueError as ex:
+        raise HTTPException(status_code=422, detail=ex.args[0])
+

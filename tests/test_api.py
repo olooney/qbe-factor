@@ -37,3 +37,17 @@ def test_get_factors():
         factor = result["factor"]
         assert isinstance(factor, float)
         assert 0.0 <= factor <= 1.0  # Python chained comparison
+
+
+def test_get_factors_errors():
+    response = client.post("/get_factors", json={"x": "y"})
+    assert response.status_code == 422
+
+    bad_categories = {
+        "data": [
+            {"var_name": "country", "category": "50+"},
+            {"var_name": "age_group", "category": "UK"}
+        ]
+    }
+    response = client.post("/get_factors", json=bad_categories)
+    assert response.status_code == 422
