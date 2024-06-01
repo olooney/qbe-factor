@@ -32,7 +32,7 @@ TODO, pytest, black
 Sprint Backlog
 --------------
 
-[ ] add model data
+[X] add model data
 [ ] model class
 [ ] test model
 [ ] unit tests
