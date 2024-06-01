@@ -1,0 +1,6 @@
+{
+    "data": [
+        {"var_name": "variable", "category": "value0", "factor": 1.0},
+        {"var_name": "variable", "category": "value1", "factor": 1.0}
+    ]
+}
