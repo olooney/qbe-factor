@@ -32,13 +32,12 @@ async def ping() -> PingResponse:
 
 @app.post("/validate")
 async def validate(variable_list: VariableList) -> ValidationResults:
-    variables = variable_list.data
-    try:
-        model.get_factors(variables)
-    except ValueError as ex:
-        return {"valid": False, "message": ex.message}
-
-    return {"valid": True, "message": ""}
+    # All validation occurs as pydantic checks the POSTed JSON against
+    # the VariableList schema, including the category/var_name mismatch.
+    # If any errors are found it will throw a ValidationError which will
+    # return a 422 HTTP response. If we reach this line of code, we know
+    # that all input was in fact valid.
+    return {"valid": True, "message": "All variables are valid."}
 
 
 @app.post("/get_factors")
@@ -46,6 +45,6 @@ async def get_factors(variable_list: VariableList) -> FactorResults:
     try:
         variables = variable_list.data
         factors = list(model.get_factors(variables))
-        return {"results": factors}
+        return { "results": factors }
     except ValueError as ex:
-        raise HTTPException(status_code=422, detail=ex.args[0])
+        raise HTTPException(status_code=500, detail=ex.args[0])

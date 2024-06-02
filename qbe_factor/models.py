@@ -6,18 +6,46 @@ import pydantic
 
 
 class VarName(Enum):
-    country = "country"
-    age_group = "age_group"
+    COUNTRY = "country"
+    AGE_GROUP = "age_group"
+
+
+class CountryCategory(Enum):
+    UK = "UK"
+    AUSTRALIA = "Australia"
+    CHINA = "China"
+    JAPAN = "Japan"
+
+
+class AgeGroupCategory(Enum):
+    AGE_18_30 = "18-30"
+    AGE_30_50 = "30-50"
+    AGE_50_PLUS = "50+"
+
+
+CATEGORY_ENUM_BY_VAR_NAME = {
+    VarName.COUNTRY: CountryCategory,
+    VarName.AGE_GROUP: AgeGroupCategory,
+}
 
 
 class Variable(pydantic.BaseModel):
     var_name: VarName
-    category: str
+    category: Union[CountryCategory, AgeGroupCategory]
+
+    @pydantic.model_validator(mode="after")
+    def validate_category_var_name_match(self):
+        CategoryEnum = CATEGORY_ENUM_BY_VAR_NAME[self.var_name]
+        if not isinstance(self.category, CategoryEnum):
+            legal_values = [c.value for c in CategoryEnum]
+            raise ValueError(
+                f"Invalid category {self.category.value!r} for var_name {self.var_name.value!r}; "
+                f"Valid values for {self.var_name.value!r} are {legal_values!r}."
+            )
+        return self
 
 
-class VariableFactor(pydantic.BaseModel):
-    var_name: VarName
-    category: str
+class VariableFactor(Variable):
     factor: float
 
 
@@ -51,7 +79,7 @@ class FactorModel:
 
         return cls(factor_data)
 
-    def get_factor(self, var_name: VarName, category: str) -> float:
+    def get_factor(self, var_name: VarName, category: Union[str, Enum]) -> float:
         """
         Return the factor for the given category of the given variable.
 
@@ -59,6 +87,9 @@ class FactorModel:
         """
         if isinstance(var_name, VarName):
             var_name = var_name.value
+
+        if isinstance(category, Enum):
+            category = category.value
 
         key = (var_name, category)
         factor = self.index.get(key, None)

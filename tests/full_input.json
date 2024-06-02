@@ -1,0 +1,11 @@
+{
+    "data": [
+        {"var_name": "country", "category": "UK"},
+        {"var_name": "country", "category": "Australia"},
+        {"var_name": "country", "category": "China"},
+        {"var_name": "country", "category": "Japan"},
+        {"var_name": "age_group", "category": "18-30"},
+        {"var_name": "age_group", "category": "30-50"},
+        {"var_name": "age_group", "category": "50+"}
+    ]
+}
