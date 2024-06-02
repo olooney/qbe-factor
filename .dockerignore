@@ -1,0 +1,11 @@
+.gitignore
+.dockerignore
+Dockerfile
+
+.git/
+tests/
+dist/
+build/
+**/__pycache__/
+*.pyc
+*.egg-info/

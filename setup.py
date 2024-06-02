@@ -1,8 +1,16 @@
 from setuptools import setup
 
+
+def grab_version():
+    with open("qbe_factor/version.py") as file:
+        line = file.readline().rstrip()
+        version = line.split(" = ")[1].replace('"', "")
+    return version
+
+
 setup(
     name="qbe_factor",
-    version="0.0.2",
+    version=grab_version(),
     author="Oran Looney",
     author_email="olooney@gmail.com",
     description="Example FastAPI app for QBE",
