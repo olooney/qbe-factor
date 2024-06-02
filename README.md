@@ -101,14 +101,14 @@ Sprint Backlog
 2. [X] model class
 3. [X] test model
 4. [X] unit tests
-5. [ ] format / comments
+5. [X] format / comments
 
 6. [X] add API
 7. [X] pydantic types
 8. [X] `var_name` validation
 9. [X] `category` validation
 10. [X] unit tests
-11. [ ] format / comments
+11. [X] format / comments
 
 
 Backlog

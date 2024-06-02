@@ -85,7 +85,7 @@ class FactorModel:
             self.index[key] = variable["factor"]
 
     @classmethod
-    def load(cls, filename=None):
+    def load(cls, filename: str = None):
         """
         Load the model's data from the Python package's data by default,
         or allow the user to specify a different JSON file.

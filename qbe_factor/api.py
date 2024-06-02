@@ -10,6 +10,7 @@ model = FactorModel.load()
 # these pydantic types are specific to the particular JSON schemas used by the
 # REST API so are defined here along with the routes.
 
+
 class PingResponse(pydantic.BaseModel):
     message: str
 
@@ -57,7 +58,7 @@ def get_factors(variable_list: VariableList) -> FactorResults:
     as `/validate`. If a ValueError other occurs during the execution of the
     model, returns a 500 message with an appropriate error message; if an
     unknown or unexpected error occurs, returns a 500 with an opaque error
-    message. 
+    message.
     """
     try:
         variables = variable_list.data
