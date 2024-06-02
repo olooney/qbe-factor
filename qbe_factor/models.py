@@ -23,6 +23,7 @@ class AgeGroupCategory(Enum):
     AGE_50_PLUS = "50+"
 
 
+# Mapping of VarName values to their corresponding category enum.
 CATEGORY_ENUM_BY_VAR_NAME = {
     VarName.COUNTRY: CountryCategory,
     VarName.AGE_GROUP: AgeGroupCategory,
@@ -30,22 +31,41 @@ CATEGORY_ENUM_BY_VAR_NAME = {
 
 
 class Variable(pydantic.BaseModel):
+    """
+    Class that represents the basic var_name/category pair use as input
+    into the `FactorModel`. Handles validation logic and typing.
+    """
+
     var_name: VarName
     category: Union[CountryCategory, AgeGroupCategory]
 
+    # this is a model-level validator that runs after all other validation;
+    # that way we know we that `var_name` is a valid VarName enum value and
+    # that `category` is in the Union. All that remains to make sure the two
+    # are internally consistent with each other.
     @pydantic.model_validator(mode="after")
     def validate_category_var_name_match(self):
+        """
+        Ensure that the category makes sense for the given var_name.
+        """
         CategoryEnum = CATEGORY_ENUM_BY_VAR_NAME[self.var_name]
+
         if not isinstance(self.category, CategoryEnum):
             legal_values = [c.value for c in CategoryEnum]
             raise ValueError(
                 f"Invalid category {self.category.value!r} for var_name {self.var_name.value!r}; "
                 f"Valid values for {self.var_name.value!r} are {legal_values!r}."
             )
+
         return self
 
 
 class VariableFactor(Variable):
+    """
+    This subclass of Variable inherits the var_num/category members and
+    all of the validation logic, but adds the computed factor.
+    """
+
     factor: float
 
 
@@ -79,9 +99,14 @@ class FactorModel:
 
         return cls(factor_data)
 
-    def get_factor(self, var_name: VarName, category: Union[str, Enum]) -> float:
+    def get_factor(
+        self, var_name: Union[str, VarName], category: Union[str, Enum]
+    ) -> float:
         """
-        Return the factor for the given category of the given variable.
+        Lower level method which returns the factor for the given category of
+        the given variable. You can pass either strings or Enum values. It
+        always returns a simple float. Use `get_factors()` below for a
+        higher-level interface with validation and strongly typed return value.
 
         Raises a ValueError if the category value is not valid.
         """

@@ -97,24 +97,25 @@ Then visit `https://github.com/olooney/qbe-factor` and create a pull request.
 Sprint Backlog
 --------------
 
-[X] add model data
-[X] model class
-[X] test model
-[X] unit tests
-[ ] format / comments
+1. [X] add model data
+2. [X] model class
+3. [X] test model
+4. [X] unit tests
+5. [ ] format / comments
 
-[X] add API
-[X] pydantic types
-[ ] `var_name` validation
-[ ] `category` validation
-[X] unit tests
-[ ] format / comments
+6. [X] add API
+7. [X] pydantic types
+8. [X] `var_name` validation
+9. [X] `category` validation
+10. [X] unit tests
+11. [ ] format / comments
 
 
 Backlog
 -------
 
-[ ] Dockerfile?
-[ ] Authentication?
-[ ] DEV/PROD flags?
-[ ] CLI?
+1. [ ] Dockerfile?
+2. [ ] Authentication?
+3. [ ] DEV/PROD flags?
+4. [ ] CLI?
+5. [ ] Logging?

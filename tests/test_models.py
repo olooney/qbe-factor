@@ -2,9 +2,9 @@ import pytest
 from qbe_factor.models import (
     CountryCategory,
     AgeGroupCategory,
-    FactorModel, 
-    Variable, 
-    VariableFactor
+    FactorModel,
+    Variable,
+    VariableFactor,
 )
 from pydantic import ValidationError
 from .util import load_json_file
@@ -34,15 +34,16 @@ def test_load_default():
         assert "category" in data[i]
         assert "factor" in data[i]
 
+
 def test_variable():
     # happy path for country
-    vf = Variable(var_name= "country", category= "UK")
+    vf = Variable(var_name="country", category="UK")
     assert vf.var_name.value == "country"
     assert vf.category.value == "UK"
     assert isinstance(vf.category, CountryCategory)
 
     # happy path for age_group
-    vf = Variable(var_name= "age_group", category= "50+")
+    vf = Variable(var_name="age_group", category="50+")
     assert vf.var_name.value == "age_group"
     assert vf.category.value == "50+"
     assert isinstance(vf.category, AgeGroupCategory)
@@ -51,15 +52,15 @@ def test_variable():
 
     # completely invalid var_name (caught by default pydantic checking)
     with pytest.raises(ValidationError):
-        vf = Variable(var_name= "bad", category= "UK")
+        vf = Variable(var_name="bad", category="UK")
 
     # completely invalid category (caught by default pydantic checking)
     with pytest.raises(ValidationError):
-        vf = Variable(var_name= "country", category= "bad")
+        vf = Variable(var_name="country", category="bad")
 
     # Age group category passed for country variable (custom model validation)
     with pytest.raises(ValidationError) as exception:
-        vf = Variable(var_name= "country", category= "50+")
+        vf = Variable(var_name="country", category="50+")
     error_message = repr(exception.value.errors())
     assert "Invalid category" in error_message, "custom error message"
     assert "var_name 'country'" in error_message, "contains the var_name"
@@ -67,7 +68,7 @@ def test_variable():
 
     # Country category passed for age_group variable (custom model validation)
     with pytest.raises(ValidationError) as exception:
-        vf = Variable(var_name= "age_group", category= "UK")
+        vf = Variable(var_name="age_group", category="UK")
     error_message = repr(exception.value.errors())
     assert "Invalid category" in error_message, "custom error message"
     assert "var_name 'age_group'" in error_message, "contains the var_name"
@@ -76,14 +77,14 @@ def test_variable():
 
 def test_variable_factor():
     # happy path for country
-    vf = VariableFactor(var_name= "country", category= "UK", factor= 0.5)
+    vf = VariableFactor(var_name="country", category="UK", factor=0.5)
     assert vf.var_name.value == "country"
     assert vf.category.value == "UK"
     assert isinstance(vf.category, CountryCategory)
     assert vf.factor == 0.5
 
     # happy path for age_group
-    vf = VariableFactor(var_name= "age_group", category= "50+", factor= 0.6)
+    vf = VariableFactor(var_name="age_group", category="50+", factor=0.6)
     assert vf.var_name.value == "age_group"
     assert vf.category.value == "50+"
     assert isinstance(vf.category, AgeGroupCategory)
@@ -93,15 +94,15 @@ def test_variable_factor():
 
     # completely invalid var_name (caught by default pydantic checking)
     with pytest.raises(ValidationError):
-        vf = VariableFactor(var_name= "bad", category= "UK", factor= 0.5)
+        vf = VariableFactor(var_name="bad", category="UK", factor=0.5)
 
     # completely invalid category (caught by default pydantic checking)
     with pytest.raises(ValidationError):
-        vf = VariableFactor(var_name= "country", category= "bad", factor= 0.5)
+        vf = VariableFactor(var_name="country", category="bad", factor=0.5)
 
     # Age group category passed for country variable (custom model validation)
     with pytest.raises(ValidationError) as exception:
-        vf = VariableFactor(var_name= "country", category= "50+", factor= 0.5)
+        vf = VariableFactor(var_name="country", category="50+", factor=0.5)
     error_message = repr(exception.value.errors())
     assert "Invalid category" in error_message, "custom error message"
     assert "var_name 'country'" in error_message, "contains the var_name"
@@ -109,7 +110,7 @@ def test_variable_factor():
 
     # Country category passed for age_group variable (custom model validation)
     with pytest.raises(ValidationError) as exception:
-        vf = VariableFactor(var_name= "age_group", category= "UK", factor= 0.5)
+        vf = VariableFactor(var_name="age_group", category="UK", factor=0.5)
     error_message = repr(exception.value.errors())
     assert "Invalid category" in error_message, "custom error message"
     assert "var_name 'age_group'" in error_message, "contains the var_name"
