@@ -2,9 +2,14 @@ from fastapi import FastAPI, HTTPException
 import pydantic
 from typing import List
 from .models import VarName, Variable, VariableFactor, FactorModel
+from .version import __version__
 
 
-app = FastAPI()
+app = FastAPI(
+    title="QBE Factor Model",
+    summary="Returns risk adjustment factors for demographic cohorts.",
+    version=__version__,
+)
 model = FactorModel.load()
 
 # these pydantic types are specific to the particular JSON schemas used by the
