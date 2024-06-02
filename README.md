@@ -42,22 +42,6 @@ version compabability problems, you can run:
 to install all dependencies on the exact versions used for development.
 
 
-Running the Server
-------------------
-
-To run the local test server, run:
-
-    python scripts/run_server.py
-
-This will start a local uvicorn instance serving on `localhost:8000` by
-default; the port can be controlled by the PORT environment variable.
-
-Visit `http://localhost:8000/ping` to check if the server has started
-correctly.
-
-Visit `http://localhost:8000/docs` for the interactive swagger docs.
-
-
 Build and Test
 --------------
 
@@ -74,6 +58,41 @@ Please also run:
 
 To automatically force all `.py` files to adhere to the strict black style
 guides.
+
+
+Running the Local Server
+------------------------
+
+To run the local test server, run:
+
+    python scripts/run_server.py
+
+This will start a local uvicorn instance serving on `localhost:8000` by
+default; the port can be controlled by the PORT environment variable.
+
+Visit `http://localhost:8000/ping` to check if the server has started
+correctly.
+
+Visit `http://localhost:8000/docs` for the interactive swagger docs.
+
+
+Building and Running in Docker
+------------------------------
+
+Ensure you have Docker installed, and in the root project directory run:
+
+    docker build -t qbe/factor .
+
+On my machine this builds a 232 MB image, which is fairly light.
+
+You can run the image as a server with:
+
+    docker run --rm -p 8000:8000 qbe/factor
+
+You may also find it useful (for debugging) to run a shell inside the container:
+
+    docker run --rm -it qbe/factor bash
+
 
 How to Contribute
 -----------------
@@ -114,7 +133,7 @@ Sprint Backlog
 Backlog
 -------
 
-1. [ ] Dockerfile?
+1. [X] Dockerfile
 2. [ ] Authentication?
 3. [ ] DEV/PROD flags?
 4. [ ] CLI?
