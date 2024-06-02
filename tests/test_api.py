@@ -21,6 +21,14 @@ def test_validate():
     assert validation_data["message"] == ""
 
 
+def test_validate_invalid():
+    input_data = load_json_file("tests/test_invalid_input.json")
+    response = client.post("/validate", json=input_data)
+    validation_data = response.json()
+    assert response.status_code == 422
+    assert "category" in validation_data["detail"][0]["msg"].lower()
+
+
 def test_get_factors():
     input_data = load_json_file("tests/test_input.json")
     response = client.post("/get_factors", json=input_data)
